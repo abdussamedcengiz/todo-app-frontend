@@ -4,7 +4,7 @@ function About() {
       <div className="w-full max-w-md bg-white border border-gray-200 rounded-2xl shadow-lg p-7">
         <h1 className="text-2xl text-center mb-5 text-gray-800 font-semibol ">Hakkinda</h1>
         <p className="text-gray-600 text-sm">
-          Bu uygulama React, TypeScript ve Node.js öğrenmek için yapıldı.
+          Bu uygulama React, TypeScript ve Node.js öğrenmek için yapildi.
         </p>
       </div>
     </div>

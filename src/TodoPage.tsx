@@ -80,7 +80,7 @@ function TodoPage() {
 
       <p className="text-center text-xs text-gray-400 mt-4">{remaining} görev kaldi</p>
       <button className="w-full mt-3 py-2 text-sm text-gray-500 border border-gray-300 rounded-lg hover:text-red-500 hover:border-red-400 cursor-pointer" onClick={clearCompleted}>
-        Tamamlananları Temizle
+        Tamamlananlari Temizle
       </button>
           
       </div>
