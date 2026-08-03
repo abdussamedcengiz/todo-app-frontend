@@ -1,75 +1,86 @@
-# React + TypeScript + Vite
+# To-Do App — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kullanıcı girişli bir yapılacaklar uygulaması.
+React + TypeScript ile yazıldı, Tailwind CSS ile tasarlandı.
 
-Currently, two official plugins are available:
+**Canlı demo:** https://todo-app-frontend-puce-nine.vercel.app
+**Backend repo:** https://github.com/abdussamedcengiz/todo-app-backend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> Not: Backend ücretsiz sunucu planında çalışıyor ve hareketsizken uykuya geçer.
+> İlk giriş 30–60 saniye sürebilir.
 
-## React Compiler
+![Uygulama ekran görüntüsü](./screenshots/app.png)
+![Uygulama ekran görüntüsü2](./screenshots/app2.png)
+![Login ekran görüntüsü](./screenshots/login.png)
+![Register ekran görüntüsü](./screenshots/register.png)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Teknolojiler
 
-## Expanding the ESLint configuration
+- React 19 + TypeScript
+- Vite
+- Tailwind CSS 4
+- React Router
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Özellikler
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Kayıt olma ve giriş yapma
+- Korumalı rotalar — giriş yapmayan kullanıcı görev sayfasına erişemez
+- Görev ekleme, silme, tamamlama
+- Satır içi görev düzenleme
+- Filtreleme: Tümü / Aktif / Tamamlanan
+- Tamamlanan görevleri toplu temizleme
+- Kalan görev sayacı
+- Yükleniyor ve hata durumları
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Kurulum
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Kök dizinde `.env` dosyası oluştur:
 
 ```
+VITE_API_URL=http://localhost:5000
+```
+
+Geliştirme sunucusunu başlat:
+
+```bash
+npm run dev
+```
+
+Uygulama `http://localhost:5173` adresinde çalışır.
+Backend'in ayrıca çalışıyor olması gerekir — bkz. [backend repo](https://github.com/abdussamedcengiz/todo-app-backend).
+
+## Proje yapısı
+
+```
+src/
+├── main.tsx          # Giriş noktası, BrowserRouter
+├── App.tsx           # Rotalar, navigasyon, korumalı rota
+├── TodoPage.tsx      # Görev ekranı
+├── LoginPage.tsx     # Giriş / kayıt ekranı
+├── About.tsx         # Hakkında sayfası
+├── TodoForm.tsx      # Görev ekleme formu
+├── TodoItem.tsx      # Tek görev satırı (düzenleme modu dahil)
+├── useTodos.ts       # Veri mantığı (custom hook)
+├── api.ts            # Backend iletişimi ve token yönetimi
+└── types.ts          # Ortak tipler
+```
+
+## Mimari notlar
+
+- **Custom hook (`useTodos`)** — tüm veri mantığı bileşenlerden ayrıldı
+- **API katmanı (`api.ts`)** — fetch detayları tek yerde, token otomatik eklenir
+- **Token yönetimi** — JWT `localStorage`'da saklanır, her istekte `Authorization` başlığıyla gönderilir
+- **Korumalı rota** — `RequireAuth` bileşeni, token yoksa `/login`'e yönlendirir
+
+## Komutlar
+
+| Komut             | Açıklama                |
+| ----------------- | ----------------------- |
+| `npm run dev`     | Geliştirme sunucusu     |
+| `npm run build`   | Üretim derlemesi        |
+| `npm run preview` | Derlenmiş sürümü önizle |
+| `npm run lint`    | ESLint kontrolü         |
