@@ -8,6 +8,7 @@ function LoginPage(){
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate=useNavigate();
 
@@ -15,6 +16,7 @@ function LoginPage(){
   const handleSubmit =async(e:React.FormEvent)=>{
     e.preventDefault();
     setError("");
+    setLoading(true);
 
 
   try{
@@ -31,15 +33,22 @@ function LoginPage(){
   }catch{
     setError(isRegister? "kayit başarisiz":"Eposta veya şifre hatali");
 
+  }finally{
+    setLoading(false);
   }
     }
 
 
 
     return(
-        <div className="min-h-scren flex justify-center items-start p-8 bg-gray-50">
+        <div className="min-h-screen flex justify-center items-center p-8 bg-gray-50">
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-2xl shadow-lg p-7 ">
-                <h1 className="text-2xl  text-center mb-5 font-semibold text-gray-200">{isRegister?"Kayit Ol":"Griş Yap"}</h1>
+                <h1 className="text-2xl  text-center mb-1 font-semibold text-gray-800">
+                
+                  {isRegister?"Kayit Ol":"Griş Yap"}</h1>
+                    <p className="text-center text-gray-500 mb-5">
+                      {isRegister?"Yeni bir hesap oluştur":"Hesabina griş yap"}
+                    </p>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                     <input
                     type="email"
@@ -60,8 +69,9 @@ function LoginPage(){
                     />
                     <button
                     type="submit"
-                    className="py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 cursor-pointer"
-                    >{isRegister?"Kayit Ol":"Griş Yap"}</button>
+                    disabled={loading}
+                    className="py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >{loading ? "İşleniyor..." : isRegister ? "Kayit Ol" : "Griş Yap"}</button>
                 </form>
                 {error&&<p className="text-center text-sm text-red-500 mt-3">{error}</p>}
                 <button onClick={()=>setIsRegister(!isRegister)} className="w-full mt-4 text-sm text-purple-600 hover:underline cursor-pointer">

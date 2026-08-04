@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Todo } from "./types";
+import type { Priority, Todo } from "./types";
 import * as api from "./api";
 
 export function useTodos() {
@@ -30,11 +30,10 @@ const [todos, setTodos] = useState<Todo[]>([]);
     fetchTodos();
   }, []);
 
-  const addTodo = async (text: string) => {
-    await api.addTodo(text);
-  
-    fetchTodos();
-  };
+const addTodo = async (text: string, priority?: Priority, dueDate?: string | null) => {
+  await api.addTodo(text, priority, dueDate);
+  fetchTodos();
+};
 
   const toggleTodo = async (id: number) => {
     await api.toggleTodo(id);
@@ -56,6 +55,10 @@ const [todos, setTodos] = useState<Todo[]>([]);
     fetchTodos();
   }
 
+  const editTodoPriority= async (id:number,priority:Priority)=>{
+    await api.editTodoPriority(id,priority);
+    fetchTodos();
+  }
  
-  return { todos, loading, error, addTodo, toggleTodo, deleteTodo, editTodo, clearCompleted };
+  return { todos, loading, error, addTodo, toggleTodo, deleteTodo, editTodo, editTodoPriority, clearCompleted };
 }

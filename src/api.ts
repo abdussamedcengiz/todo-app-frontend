@@ -1,5 +1,5 @@
 
-import type { Todo } from "./types";
+import type { Priority, Todo } from "./types";
 
 const API = `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/todos`;
 const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -24,11 +24,11 @@ export async function getTodos():Promise<Todo[]>{
 }
 
 
-export async function  addTodo(text: string):Promise<void>{
+export async function  addTodo(text: string, priority?: Priority, dueDate?: string | null):Promise<void>{
      await fetch(API, {
       method: "POST",
       headers: headers(),
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text, priority, dueDate }),
     });
 
 }
@@ -46,6 +46,14 @@ export async function editTodo(id: number, text: string):Promise<void>{
      headers: headers(),
       body: JSON.stringify({ text }),
       
+    });
+
+}
+export async function editTodoPriority(id: number, priority: Priority):Promise<void>{
+    await fetch(`${API}/${id}/priority`, {
+      method: "PUT",
+      headers: headers(),
+        body: JSON.stringify({ priority }),
     });
 
 }

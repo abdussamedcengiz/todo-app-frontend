@@ -31,7 +31,7 @@ function TodoPage() {
 
   return (
     <div className="min-h-screen  flex  justify-center items-start p-8  bg-gray-50">
-      <div className="w-full max-w-md bg-white  border border-gray-200 rounded-2xl shadow-lg p-7">
+      <div className="w-full max-w-2xl bg-white  border border-gray-200 rounded-2xl shadow-lg p-7">
       <h1 className="text-2xl text-center mb-5 font-semibold text-gray-800">Yapilacaklar</h1>
 
       <TodoForm onAdd={addTodo} />
