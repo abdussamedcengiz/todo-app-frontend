@@ -10,7 +10,6 @@ React + TypeScript ile yazıldı, Tailwind CSS ile tasarlandı.
 > İlk giriş 30–60 saniye sürebilir.
 
 ![Uygulama ekran görüntüsü](./screenshots/app.png)
-![Uygulama ekran görüntüsü2](./screenshots/app2.png)
 ![Login ekran görüntüsü](./screenshots/login.png)
 ![Register ekran görüntüsü](./screenshots/register.png)
 
