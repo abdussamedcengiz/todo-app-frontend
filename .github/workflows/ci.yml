@@ -1,0 +1,32 @@
+name: CI
+
+# main'e her push ve her pull request'te calisir.
+# Amac: lint hatasi ya da derlenmeyen bir degisiklik, canliya
+# cikmadan once burada gorunsun.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    name: Lint ve build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          # npm onbellegi: paketleri her kosuda sifirdan indirmez.
+          cache: npm
+
+      # "npm ci" (install degil): package-lock.json'a birebir uyar.
+      - run: npm ci
+
+      - run: npm run lint
+
+      # "npm run build" once "tsc -b" calistirir: tip hatasi varsa
+      # build burada durur, bozuk paket uretilmez.
+      - run: npm run build

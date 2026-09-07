@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Ortam degiskenleri.
+# "*.local" yalnizca ".env.local"i yakaliyordu; duz ".env" acikta
+# kaliyordu. Bu depoda gizli bir deger tutulmuyor (VITE_ ile
+# baslayan her sey zaten pakete gomulur ve herkese aciktir) ama
+# yanlislikla eklenen bir .env'i git gecmisinden temizlemek
+# zordur -- kural bastan konsun.
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
