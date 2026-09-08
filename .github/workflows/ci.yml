@@ -18,16 +18,21 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
           # npm onbellegi: paketleri her kosuda sifirdan indirmez.
           cache: npm
 
-      # "npm install" kullaniliyor, "npm ci" degil: lock dosyasi Windows'ta
-      # uretiliyor ve npm, Linux'ta cozulen wasm yedek paketlerini
-      # (@tailwindcss/oxide-wasm32-wasi -> @emnapi/*) lock'a yazamiyor.
-      # "npm ci" lock'un birebir ortusmesini sart kostugu icin bu yuzden
-      # kiriliyordu. Karsiliginda lock tutarsizligi CI'da yakalanmiyor.
-      - run: npm install --no-audit --no-fund
+      # "npm ci" (install degil): package-lock.json'a birebir uyar, boylece
+      # lock ile package.json arasindaki tutarsizlik burada yakalanir.
+      #
+      # package-lock.json Linux'ta uretilmeli: npm, istege bagli (optional)
+      # platform paketlerini yalnizca calistigi platform icin cozuyor.
+      # Windows'ta uretilen lock, ubuntu-latest'in ihtiyac duydugu
+      # @tailwindcss/oxide-linux-x64-gnu ve @emnapi/* girdilerini
+      # icermedigi icin "npm ci" kiriliyordu. Bagimlilik guncellenirken:
+      #
+      #   docker run --rm -v "${PWD}:/app" -w /app node:22 npm install --package-lock-only
+      - run: npm ci
 
       - run: npm run lint
 
