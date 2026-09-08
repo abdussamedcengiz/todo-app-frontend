@@ -22,8 +22,12 @@ jobs:
           # npm onbellegi: paketleri her kosuda sifirdan indirmez.
           cache: npm
 
-      # "npm ci" (install degil): package-lock.json'a birebir uyar.
-      - run: npm ci
+      # "npm install" kullaniliyor, "npm ci" degil: lock dosyasi Windows'ta
+      # uretiliyor ve npm, Linux'ta cozulen wasm yedek paketlerini
+      # (@tailwindcss/oxide-wasm32-wasi -> @emnapi/*) lock'a yazamiyor.
+      # "npm ci" lock'un birebir ortusmesini sart kostugu icin bu yuzden
+      # kiriliyordu. Karsiliginda lock tutarsizligi CI'da yakalanmiyor.
+      - run: npm install --no-audit --no-fund
 
       - run: npm run lint
 
