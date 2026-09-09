@@ -1,0 +1,41 @@
+name: CI
+
+# main'e her push ve her pull request'te calisir.
+# Amac: lint hatasi ya da derlenmeyen bir degisiklik, canliya
+# cikmadan once burada gorunsun.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    name: Lint ve build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          # npm onbellegi: paketleri her kosuda sifirdan indirmez.
+          cache: npm
+
+      # "npm ci" (install degil): package-lock.json'a birebir uyar, boylece
+      # lock ile package.json arasindaki tutarsizlik burada yakalanir.
+      #
+      # package-lock.json Linux'ta uretilmeli: npm, istege bagli (optional)
+      # platform paketlerini yalnizca calistigi platform icin cozuyor.
+      # Windows'ta uretilen lock, ubuntu-latest'in ihtiyac duydugu
+      # @tailwindcss/oxide-linux-x64-gnu ve @emnapi/* girdilerini
+      # icermedigi icin "npm ci" kiriliyordu. Bagimlilik guncellenirken:
+      #
+      #   docker run --rm -v "${PWD}:/app" -w /app node:22 npm install --package-lock-only
+      - run: npm ci
+
+      - run: npm run lint
+
+      # "npm run build" once "tsc -b" calistirir: tip hatasi varsa
+      # build burada durur, bozuk paket uretilmez.
+      - run: npm run build
